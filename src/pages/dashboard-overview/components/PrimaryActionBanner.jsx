@@ -32,7 +32,7 @@ export default function PrimaryActionBanner() {
           <div className="flex items-center gap-2 mb-2">
             <Icon name="Leaf" size={18} color="#32CD32" />
             <span className="font-caption text-xs font-semibold uppercase tracking-widest" style={{ color: "#32CD32" }}>
-              VanaRaksha Platform
+              Greenergy Platform
             </span>
           </div>
           <h1 className="font-heading font-bold text-xl md:text-2xl lg:text-3xl text-white mb-2 leading-tight">

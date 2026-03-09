@@ -133,7 +133,7 @@ export default function Header({ calculationState = null, onDistrictChange, sele
                 className="font-heading font-700 text-white"
                 style={{ fontSize: '0.95rem', fontWeight: 700, letterSpacing: '0.01em' }}
               >
-                VanaRaksha
+                Greenergy
               </span>
               <span
                 className="text-white font-caption"

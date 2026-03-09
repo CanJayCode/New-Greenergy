@@ -99,7 +99,7 @@ export default function DashboardOverview() {
         <footer className="pt-4 pb-2 border-t" style={{ borderColor: "var(--color-border)" }}>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
             <p className="font-caption text-xs" style={{ color: "var(--color-muted-foreground)" }}>
-              © {new Date()?.getFullYear()} VanaRaksha · Maharashtra Forest Department · Environmental Planning Platform
+              © {new Date()?.getFullYear()} Greenergy · Maharashtra Forest Department · Environmental Planning Platform
             </p>
             <p className="font-caption text-xs" style={{ color: "var(--color-muted-foreground)" }}>
               Data: {dataSource === "api" ? "Live WAQI API" : "Static fallback"} · {new Date()?.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}
