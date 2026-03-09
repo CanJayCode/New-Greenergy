@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Icon from 'components/AppIcon';
+import { useAuth } from '../../contexts/AuthContext';
 
 
 const NAV_ITEMS = [
@@ -46,6 +47,7 @@ const MAHARASHTRA_DISTRICTS = [
 ];
 
 export default function Header({ calculationState = null, onDistrictChange, selectedDistrict = '' }) {
+  const { currentUser, userData, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -82,6 +84,15 @@ export default function Header({ calculationState = null, onDistrictChange, sele
   const handleNavClick = (path) => {
     navigate(path);
     setMobileMenuOpen(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+    } catch (err) {
+      console.error("Failed to log out", err);
+    }
   };
 
   // Close dropdowns on outside click
@@ -144,11 +155,50 @@ export default function Header({ calculationState = null, onDistrictChange, sele
             </div>
           </div>
 
-          {/* Brand right info */}
-          <div className="hidden md:flex items-center gap-2">
-            <span className="font-caption text-white" style={{ fontSize: '0.75rem', opacity: 0.7 }}>
-              Maharashtra Forest Department
-            </span>
+          {/* Auth/Profile Section */}
+          <div className="flex items-center gap-4">
+            {currentUser ? (
+              <div className="flex items-center gap-3">
+                <div className="hidden sm:flex flex-col items-end leading-none">
+                  <span className="font-caption text-xs font-bold text-white uppercase tracking-wider">
+                    {userData?.displayName || 'User'}
+                  </span>
+                  <span className="font-caption text-[10px] text-white/70">
+                    {userData?.organization || 'Greenergy Member'}
+                  </span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 transition-all text-white font-caption text-xs font-bold uppercase tracking-widest"
+                >
+                  <Icon name="LogOut" size={14} />
+                  <span className="hidden sm:inline">Logout</span>
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => navigate('/login')}
+                  className="text-white font-caption text-xs font-bold uppercase tracking-widest hover:opacity-80 transition-opacity"
+                >
+                  Login
+                </button>
+                <button
+                  onClick={() => navigate('/signup')}
+                  className="px-3 py-1.5 rounded-lg bg-white text-primary font-caption text-xs font-bold uppercase tracking-widest hover:bg-white/90 transition-colors shadow-sm"
+                >
+                  Signup
+                </button>
+              </div>
+            )}
+
+            <div className="h-6 w-px bg-white/20 hidden md:block mx-1" />
+
+            <div className="hidden md:flex items-center gap-2">
+              <span className="font-caption text-white" style={{ fontSize: '0.75rem', opacity: 0.7 }}>
+                Maharashtra Forest Department
+              </span>
+            </div>
           </div>
         </div>
       </div>
