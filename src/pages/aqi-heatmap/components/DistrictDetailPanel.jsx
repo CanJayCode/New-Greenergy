@@ -77,21 +77,23 @@ export default function DistrictDetailPanel({ districtId, onClose, isMobile, dis
         };
 
     const panelStyle = isMobile
-        ? { position: "fixed", bottom: 0, left: 0, right: 0, maxHeight: "85vh", borderRadius: "24px 24px 0 0", zIndex: 10001, overflowY: "auto" }
-        : { position: "fixed", top: 0, right: 0, width: 400, height: "100vh", zIndex: 10001, overflowY: "auto" };
+        ? { position: "fixed", bottom: 0, left: 0, right: 0, maxHeight: "85vh", borderRadius: "24px 24px 0 0", zIndex: 9000, overflowY: "auto" }
+        : { position: "fixed", top: 0, right: 0, width: 400, height: "100vh", zIndex: 9000, overflowY: "auto" };
 
     return (
         <AnimatePresence mode="wait">
             {districtId && (
                 <div key="panel-root">
-                    <motion.div
-                        key="backdrop"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        onClick={onClose}
-                        style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 10000, backdropFilter: "blur(4px)" }}
-                    />
+                    {isMobile && (
+                        <motion.div
+                            key="backdrop"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={onClose}
+                            style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 10000, backdropFilter: "blur(4px)" }}
+                        />
+                    )}
                     <motion.div
                         key="panel"
                         variants={panelVariants}
@@ -156,6 +158,35 @@ export default function DistrictDetailPanel({ districtId, onClose, isMobile, dis
                                     <p className="font-data font-bold text-2xl" style={{ color: "#32CD32" }}>{data?.multiplier}x</p>
                                 </div>
                             </div>
+
+                            {/* Health Advisory */}
+                            {data?.aqi > 50 && (
+                                <div className="rounded-xl p-3 border" 
+                                    style={{ 
+                                        background: data.aqi > 150 ? "rgba(239,68,68,0.1)" : "rgba(234,179,8,0.1)",
+                                        borderColor: data.aqi > 150 ? "rgba(239,68,68,0.3)" : "rgba(234,179,8,0.3)"
+                                    }}
+                                >
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <Icon 
+                                            name={data.aqi > 150 ? "AlertTriangle" : "Info"} 
+                                            size={14} 
+                                            color={data.aqi > 150 ? "#ef4444" : "#eab308"} 
+                                        />
+                                        <span className="text-[10px] font-bold uppercase tracking-wider font-caption" 
+                                            style={{ color: data.aqi > 150 ? "#ef4444" : "#eab308" }}
+                                        >
+                                            Health Advisory
+                                        </span>
+                                    </div>
+                                    <p className="text-xs text-white/70 font-caption leading-relaxed">
+                                        {data.aqi > 200 ? "Avoid outdoor activities. Wear an N95 mask if going outside." :
+                                         data.aqi > 150 ? "Unhealthy conditions. Sensitive groups should stay indoors." :
+                                         data.aqi > 100 ? "Active children and adults should limit prolonged outdoor exertion." :
+                                         "Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people."}
+                                    </p>
+                                </div>
+                            )}
 
                             {/* Soil Info */}
                             <div className="rounded-xl px-4 py-3 flex items-center gap-3"
@@ -229,6 +260,43 @@ export default function DistrictDetailPanel({ districtId, onClose, isMobile, dis
                                     <span className="font-data text-sm font-bold" style={{ color: "#32CD32" }}>{data?.oc}%</span>
                                 </div>
                             </div>
+
+                            {/* Weather Info */}
+                            {data?.temp !== undefined && (
+                                <div>
+                                    <p className="font-heading font-semibold text-sm mb-3" style={{ color: "#E0E8E0" }}>Live Weather Conditions</p>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div className="rounded-xl p-3 bg-white/5 border border-white/10 flex items-center gap-3">
+                                            <Icon name="Thermometer" size={16} color="#f87171" />
+                                            <div>
+                                                <p className="text-[10px] uppercase text-white/40 font-caption">Temp</p>
+                                                <p className="text-sm font-bold text-white font-data">{data.temp}°C</p>
+                                            </div>
+                                        </div>
+                                        <div className="rounded-xl p-3 bg-white/5 border border-white/10 flex items-center gap-3">
+                                            <Icon name="Droplets" size={16} color="#60a5fa" />
+                                            <div>
+                                                <p className="text-[10px] uppercase text-white/40 font-caption">Humidity</p>
+                                                <p className="text-sm font-bold text-white font-data">{data.humidity}%</p>
+                                            </div>
+                                        </div>
+                                        <div className="rounded-xl p-3 bg-white/5 border border-white/10 flex items-center gap-3">
+                                            <Icon name="Wind" size={16} color="#a78bfa" />
+                                            <div>
+                                                <p className="text-[10px] uppercase text-white/40 font-caption">Wind Speed</p>
+                                                <p className="text-sm font-bold text-white font-data">{data.wind} m/s</p>
+                                            </div>
+                                        </div>
+                                        <div className="rounded-xl p-3 bg-white/5 border border-white/10 flex items-center gap-3">
+                                            <Icon name="Gauge" size={16} color="#fbbf24" />
+                                            <div>
+                                                <p className="text-[10px] uppercase text-white/40 font-caption">Pressure</p>
+                                                <p className="text-sm font-bold text-white font-data">{data.pressure} hPa</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Action Buttons */}
                             <div className="flex gap-2 pb-2">

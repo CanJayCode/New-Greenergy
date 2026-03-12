@@ -7,6 +7,7 @@ import RecentAnalysisFeed from "./components/RecentAnalysisFeed";
 import DistrictPerformanceWidget from "./components/DistrictPerformanceWidget";
 import PrimaryActionBanner from "./components/PrimaryActionBanner";
 import EnvironmentalImpactSummary from "./components/EnvironmentalImpactSummary";
+import ImpactTrendsChart from "./components/ImpactTrendsChart";
 import { useAllDistrictsData } from "hooks/useDistrictData";
 
 export default function DashboardOverview() {
@@ -21,7 +22,7 @@ export default function DashboardOverview() {
   const METRICS = [
     {
       icon: "Wind",
-      label: "Maharashtra Avg AQI",
+      label: "Regional Avg AQI",
       value: loading ? "…" : String(avgAQI),
       unit: "µg/m³",
       trend: "down",
@@ -76,6 +77,10 @@ export default function DashboardOverview() {
             {METRICS?.map((m) => <MetricCard key={m?.label} {...m} />)}
           </div>
         </section>
+        <section aria-label="Environmental impact trends">
+          <ImpactTrendsChart districtData={districtData} loading={loading} />
+        </section>
+
         <section aria-label="Quick access tools">
           <div className="flex items-center gap-2 mb-4">
             <span className="font-heading font-semibold text-base md:text-lg" style={{ color: "var(--color-foreground)" }}>Platform Tools</span>
@@ -83,9 +88,11 @@ export default function DashboardOverview() {
           </div>
           <QuickAccessToolbar />
         </section>
+
         <section aria-label="Environmental impact summary">
           <EnvironmentalImpactSummary />
         </section>
+
         <section aria-label="District analysis and performance">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-6">
             <div className="lg:col-span-2">
@@ -99,7 +106,7 @@ export default function DashboardOverview() {
         <footer className="pt-4 pb-2 border-t" style={{ borderColor: "var(--color-border)" }}>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
             <p className="font-caption text-xs" style={{ color: "var(--color-muted-foreground)" }}>
-              © {new Date()?.getFullYear()} Greenergy · Maharashtra Forest Department · Environmental Planning Platform
+              © {new Date()?.getFullYear()} Greenergy · Environmental Authority · Environmental Planning Platform
             </p>
             <p className="font-caption text-xs" style={{ color: "var(--color-muted-foreground)" }}>
               Data: {dataSource === "api" ? "Live WAQI API" : "Static fallback"} · {new Date()?.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}

@@ -96,7 +96,7 @@ export default function InteractivePlantationCalculator() {
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <div>
             <h1 className="font-heading font-bold text-2xl md:text-3xl" style={{ color: "var(--color-foreground)" }}>Plantation Calculator</h1>
-            <p className="font-caption text-sm mt-1" style={{ color: "var(--color-muted-foreground)" }}>AQI-weighted tree requirement engine for Maharashtra districts</p>
+            <p className="font-caption text-sm mt-1" style={{ color: "var(--color-muted-foreground)" }}>AQI-weighted tree requirement engine for region</p>
           </div>
           <button onClick={() => navigate("/dashboard-overview")}
             className="flex items-center gap-2 px-3 py-2 rounded-xl font-caption text-sm transition-colors duration-150"

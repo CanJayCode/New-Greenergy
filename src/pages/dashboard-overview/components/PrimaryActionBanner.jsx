@@ -36,10 +36,10 @@ export default function PrimaryActionBanner() {
             </span>
           </div>
           <h1 className="font-heading font-bold text-xl md:text-2xl lg:text-3xl text-white mb-2 leading-tight">
-            Maharashtra Reforestation Intelligence
+            Global Reforestation Intelligence
           </h1>
           <p className="font-body text-sm md:text-base" style={{ color: "rgba(255,255,255,0.7)", maxWidth: "520px" }}>
-            Data-driven plantation planning using AQI metrics and soil composition for 36 districts. Eliminate blind plantation with science-backed recommendations.
+            Data-driven plantation planning using AQI metrics and soil composition for all regions. Eliminate blind plantation with science-backed recommendations.
           </p>
         </div>
 

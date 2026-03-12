@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "ESNext",
+        "target": "ES2020",
         "useDefineForClassFields": true,
         "lib": [
             "DOM",
@@ -9,12 +9,12 @@
         ],
         "allowJs": true,
         "skipLibCheck": true,
-        "esModuleInterop": true,
+        "esModuleInterop": false,
         "allowSyntheticDefaultImports": true,
-        "strict": false,
+        "strict": true,
         "forceConsistentCasingInFileNames": true,
         "module": "ESNext",
-        "moduleResolution": "Node",
+        "moduleResolution": "Bundler",
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,

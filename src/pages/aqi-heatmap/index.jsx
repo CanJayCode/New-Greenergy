@@ -10,8 +10,16 @@ import { useAllDistrictsData } from 'hooks/useDistrictData';
 export default function AQIHeatmap() {
     const [selectedDistrict, setSelectedDistrict] = useState(null);
     const [aqiRange, setAQIRange] = useState([0, 350]);
+    const [activePollutant, setActivePollutant] = useState("aqi");
     const { data: districtData, loading } = useAllDistrictsData();
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    const POLLUTANTS = [
+        { id: "aqi", name: "AQI", unit: "" },
+        { id: "pm25", name: "PM2.5", unit: "μg/m³" },
+        { id: "pm10", name: "PM10", unit: "μg/m³" },
+        { id: "no2", name: "NO₂", unit: "μg/m³" },
+    ];
 
     // Dynamic resize listener for layout stability
     React.useEffect(() => {
@@ -28,8 +36,7 @@ export default function AQIHeatmap() {
         }
         // Match the ID format in MAHARASHTRA_GEOJSON properties
         const id = name.toLowerCase()
-            .replace(/\s+/g, '_')
-            .replace(/mumbai_suburban/g, "suburban");
+            .replace(/\s+/g, '_');
         setSelectedDistrict(id);
     };
 
@@ -45,17 +52,26 @@ export default function AQIHeatmap() {
                 onDistrictChange={handleHeaderDistrictChange}
             />
             <main className="flex-1 max-w-screen-xl mx-auto w-full px-4 md:px-6 lg:px-8 py-4 md:py-6 flex flex-col gap-4">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-40">
                     <div className="space-y-1">
                         <Breadcrumbs items={[{ label: "Dashboard", path: "/dashboard-overview" }, { label: "AQI Heatmap", path: "/aqi-heatmap" }]} />
                         <h1 className="font-heading font-bold text-xl md:text-2xl text-foreground">Interactive AQI Heatmap</h1>
                     </div>
-                    <DistrictSearchFilter
-                        onSelectDistrict={setSelectedDistrict}
-                        selectedDistrict={selectedDistrict}
-                        aqiRange={aqiRange}
-                        onAQIRangeChange={setAQIRange}
-                    />
+                    <div className="flex bg-black/40 p-1 rounded-xl border border-white/10">
+                        {POLLUTANTS.map(p => (
+                            <button
+                                key={p.id}
+                                onClick={() => setActivePollutant(p.id)}
+                                className={`px-3 py-1.5 rounded-lg text-xs font-caption transition-all ${
+                                    activePollutant === p.id 
+                                    ? "bg-primary text-white shadow-lg" 
+                                    : "text-white/60 hover:text-white"
+                                }`}
+                            >
+                                {p.name}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 <div
@@ -71,6 +87,7 @@ export default function AQIHeatmap() {
                         onDistrictClick={setSelectedDistrict}
                         aqiRange={aqiRange}
                         districtData={districtData}
+                        activePollutant={activePollutant}
                     />
 
                     {/* Floating Legend */}

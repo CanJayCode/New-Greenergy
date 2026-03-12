@@ -116,6 +116,7 @@ module.exports = {
                 'fade-in': 'fadeIn 250ms cubic-bezier(0.4, 0, 0.2, 1) forwards',
                 'slide-down': 'slideDown 250ms cubic-bezier(0.4, 0, 0.2, 1) forwards',
                 'slide-up': 'slideUp 250ms cubic-bezier(0.4, 0, 0.2, 1) forwards',
+                "pulse-slow": "pulse-slow 3s ease-in-out infinite",
             },
             keyframes: {
                 shimmer: {
@@ -141,6 +142,10 @@ module.exports = {
                 slideUp: {
                     'from': { opacity: '0', transform: 'translateY(8px)' },
                     'to': { opacity: '1', transform: 'translateY(0)' },
+                },
+                "pulse-slow": {
+                    '0%, 100%': { transform: 'translateX(-100%)' },
+                    '50%': { transform: 'translateX(100%)' },
                 },
             },
             maxWidth: {

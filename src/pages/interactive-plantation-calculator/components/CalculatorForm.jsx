@@ -38,7 +38,7 @@ export default function CalculatorForm({ formData, errors, onChange, onCalculate
           <label className="block font-caption font-medium text-sm mb-1.5" style={{ color: "var(--color-foreground)" }}>
             District <span style={{ color: "var(--color-error)" }}>*</span>
           </label>
-          <Select options={DISTRICTS} value={formData?.district} onChange={(val) => onChange("district", val)} placeholder="Select Maharashtra district" searchable error={errors?.district} />
+          <Select options={DISTRICTS} value={formData?.district} onChange={(val) => onChange("district", val)} placeholder="Select district" searchable error={errors?.district} />
         </div>
         <div>
           <label className="block font-caption font-medium text-sm mb-1.5" style={{ color: "var(--color-foreground)" }}>

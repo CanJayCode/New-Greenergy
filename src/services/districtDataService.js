@@ -95,6 +95,10 @@ async function fetchDistrictAQI(districtId) {
                 no2: iaqi?.no2?.v ?? STATIC_AQI_DATA?.[districtId]?.no2,
                 so2: iaqi?.so2?.v ?? STATIC_AQI_DATA?.[districtId]?.so2,
                 co: iaqi?.co?.v ?? STATIC_AQI_DATA?.[districtId]?.co,
+                temp: iaqi?.t?.v,
+                humidity: iaqi?.h?.v,
+                wind: iaqi?.w?.v,
+                pressure: iaqi?.p?.v,
                 source: "api",
             };
         }
@@ -137,6 +141,10 @@ export async function fetchAllDistrictsData() {
             no2: aqiData?.no2,
             so2: aqiData?.so2,
             co: aqiData?.co,
+            temp: aqiData?.temp,
+            humidity: aqiData?.humidity,
+            wind: aqiData?.wind,
+            pressure: aqiData?.pressure,
             source: aqiData?.source,
         };
     });
@@ -169,6 +177,10 @@ export async function fetchDistrictData(districtId) {
         no2: aqiData?.no2,
         so2: aqiData?.so2,
         co: aqiData?.co,
+        temp: aqiData?.temp,
+        humidity: aqiData?.humidity,
+        wind: aqiData?.wind,
+        pressure: aqiData?.pressure,
         source: aqiData?.source,
     };
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import {
+import React, {
     useEffect,
     useRef,
     useState,
@@ -9,6 +9,11 @@ import {
     WheelEvent,
 } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion';
+
+const MotionDiv = motion.div as any;
+const MotionSection = motion.section as any;
+const MotionP = motion.p as any;
+const MotionH2 = motion.h2 as any;
 
 interface ScrollExpandMediaProps {
     mediaType?: 'video' | 'image';
@@ -181,9 +186,9 @@ const ScrollExpandMedia = ({
         >
             <section className='relative flex flex-col items-center justify-start min-h-[100dvh]'>
                 <div className='relative w-full flex flex-col items-center min-h-[100dvh] text-white'>
-                    <motion.div
+                    <MotionDiv
                         className='absolute inset-0 z-0 h-full'
-                        style={{ opacity: bgOpacity }}
+                        style={{ opacity: bgOpacity } as any}
                     >
                         <img
                             src={bgImageSrc}
@@ -191,11 +196,11 @@ const ScrollExpandMedia = ({
                             className='w-screen h-screen object-cover object-center'
                         />
                         <div className='absolute inset-0 bg-black/10' />
-                    </motion.div>
+                    </MotionDiv>
 
                     <div className='container mx-auto flex flex-col items-center justify-start relative z-10'>
                         <div className='flex flex-col items-center justify-center w-full h-[100dvh] relative overflow-hidden'>
-                            <motion.div
+                            <MotionDiv
                                 className='absolute z-0 top-1/2 left-1/2 rounded-2xl overflow-hidden bg-black'
                                 style={{
                                     width: isMobileState ? 320 : 640,
@@ -209,7 +214,7 @@ const ScrollExpandMedia = ({
                                     willChange: 'transform',
                                     backfaceVisibility: 'hidden',
                                     transformStyle: 'preserve-3d'
-                                }}
+                                } as any}
                             >
                                 {mediaType === 'video' ? (
                                     mediaSrc.includes('youtube.com') || mediaSrc.includes('youtu.be') ? (
@@ -232,11 +237,11 @@ const ScrollExpandMedia = ({
                                                 allowFullScreen
                                             />
                                             <div className='absolute inset-0 z-10' />
-                                            <motion.div
+                                            <MotionDiv
                                                 className='absolute inset-0 bg-black/30'
                                                 style={{
                                                     opacity: useTransform(scrollProgress, [0, 1], [0.7, 0.2])
-                                                }}
+                                                } as any}
                                             />
                                         </div>
                                     ) : (
@@ -255,11 +260,11 @@ const ScrollExpandMedia = ({
                                                 disableRemotePlayback
                                             />
                                             <div className='absolute inset-0 z-10' />
-                                            <motion.div
+                                            <MotionDiv
                                                 className='absolute inset-0 bg-black/30'
                                                 style={{
                                                     opacity: useTransform(scrollProgress, [0, 1], [0.7, 0.2])
-                                                }}
+                                                } as any}
                                             />
                                         </div>
                                     )
@@ -270,62 +275,62 @@ const ScrollExpandMedia = ({
                                             alt={title || 'Media content'}
                                             className='w-full h-full object-cover'
                                         />
-                                        <motion.div
+                                        <MotionDiv
                                             className='absolute inset-0 bg-black/50'
                                             style={{
                                                 opacity: useTransform(scrollProgress, [0, 1], [0.7, 0.4])
-                                            }}
+                                            } as any}
                                         />
                                     </div>
                                 )}
 
                                 <div className='flex flex-col items-center text-center relative z-10 mt-4 transition-none'>
                                     {date && (
-                                        <motion.p
+                                        <MotionP
                                             className='text-2xl text-white font-bold'
-                                            style={{ x: useTransform(scrollProgress, v => `-${v * (isMobileState ? 180 : 150)}vw`) }}
+                                            style={{ x: useTransform(scrollProgress, (v: number) => `-${v * (isMobileState ? 180 : 150)}vw`) } as any}
                                         >
                                             {date}
-                                        </motion.p>
+                                        </MotionP>
                                     )}
                                     {scrollToExpand && (
-                                        <motion.p
+                                        <MotionP
                                             className='text-white/80 font-medium text-center'
-                                            style={{ x: useTransform(scrollProgress, v => `${v * (isMobileState ? 180 : 150)}vw`) }}
+                                            style={{ x: useTransform(scrollProgress, (v: number) => `${v * (isMobileState ? 180 : 150)}vw`) } as any}
                                         >
                                             {scrollToExpand}
-                                        </motion.p>
+                                        </MotionP>
                                     )}
                                 </div>
-                            </motion.div>
+                            </MotionDiv>
 
                             <div
                                 className={`flex items-center justify-center text-center gap-4 w-full relative z-10 transition-none flex-col ${textBlend ? 'mix-blend-difference' : 'mix-blend-normal'
                                     }`}
                             >
-                                <motion.h2
+                                <MotionH2
                                     className='text-5xl md:text-7xl lg:text-9xl font-black text-white transition-none'
-                                    style={{ x: useTransform(scrollProgress, v => `-${v * (isMobileState ? 180 : 150)}vw`) }}
+                                    style={{ x: useTransform(scrollProgress, (v: number) => `-${v * (isMobileState ? 180 : 150)}vw`) } as any}
                                 >
                                     {firstWord}
-                                </motion.h2>
-                                <motion.h2
+                                </MotionH2>
+                                <MotionH2
                                     className='text-5xl md:text-7xl lg:text-9xl font-black text-center text-white transition-none'
-                                    style={{ x: useTransform(scrollProgress, v => `${v * (isMobileState ? 180 : 150)}vw`) }}
+                                    style={{ x: useTransform(scrollProgress, (v: number) => `${v * (isMobileState ? 180 : 150)}vw`) } as any}
                                 >
                                     {restOfTitle}
-                                </motion.h2>
+                                </MotionH2>
                             </div>
                         </div>
 
-                        <motion.section
+                        <MotionSection
                             className='flex flex-col w-full px-8 py-10 md:px-16 lg:py-20 bg-black/50 backdrop-blur-md'
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: showContent ? 1 : 0 }}
-                            transition={{ duration: 0.7 }}
+                            initial={{ opacity: 0 } as any}
+                            animate={{ opacity: showContent ? 1 : 0 } as any}
+                            transition={{ duration: 0.7 } as any}
                         >
                             {children}
-                        </motion.section>
+                        </MotionSection>
                     </div>
                 </div>
             </section>

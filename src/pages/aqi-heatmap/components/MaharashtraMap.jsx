@@ -24,6 +24,25 @@ function MapEffects() {
     return null;
 }
 
+function DistrictPanEffect({ selectedDistrict }) {
+    const map = useMap();
+    useEffect(() => {
+        if (selectedDistrict && MAHARASHTRA_GEOJSON?.features) {
+            const feature = MAHARASHTRA_GEOJSON.features.find(f => f?.properties?.id === selectedDistrict);
+            if (feature) {
+                const layer = L.geoJSON(feature);
+                const isMobile = window.innerWidth < 768;
+                map.flyToBounds(layer.getBounds(), {
+                    paddingTopLeft: [50, 50],
+                    paddingBottomRight: isMobile ? [50, 50] : [450, 50],
+                    duration: 1.25
+                });
+            }
+        }
+    }, [selectedDistrict, map]);
+    return null;
+}
+
 function ResetViewControl({ onReset }) {
     const map = useMap();
     const handleReset = () => {
@@ -54,16 +73,20 @@ function ResetViewControl({ onReset }) {
     );
 }
 
-export default function MaharashtraMap({ selectedDistrict, onDistrictClick, aqiRange, districtData }) {
+export default function MaharashtraMap({ selectedDistrict, onDistrictClick, aqiRange, districtData, activePollutant = "aqi" }) {
     const geoJsonRef = useRef(null);
 
     const getDistrictStyle = useCallback((feature) => {
         const id = feature?.properties?.id;
         const d = districtData?.[id];
-        const aqi = d?.aqi ?? 0;
-        const aqiInfo = getAQIColor(aqi);
+        const val = activePollutant === "aqi" ? (d?.aqi ?? 0) : (d?.[activePollutant] ?? 0);
+        
+        // For individual pollutants, we normalize them to AQI colors or use a custom scale
+        const aqiInfo = getAQIColor(activePollutant === "aqi" ? val : (val * 2)); 
         const isSelected = selectedDistrict === id;
+        const aqi = d?.aqi ?? 0;
         const isFiltered = aqi < (aqiRange?.[0] ?? 0) || aqi > (aqiRange?.[1] ?? 350);
+
         return {
             fillColor: isFiltered ? "#333" : aqiInfo?.fill,
             fillOpacity: isFiltered ? 0.15 : isSelected ? 0.85 : 0.65,
@@ -71,14 +94,15 @@ export default function MaharashtraMap({ selectedDistrict, onDistrictClick, aqiR
             weight: isSelected ? 3 : 1.5,
             opacity: isFiltered ? 0.3 : 1,
         };
-    }, [selectedDistrict, aqiRange, districtData]);
+    }, [selectedDistrict, aqiRange, districtData, activePollutant]);
 
     const onEachFeature = useCallback((feature, layer) => {
         const id = feature?.properties?.id;
         const name = feature?.properties?.name;
         const d = districtData?.[id];
         const aqi = d?.aqi ?? 0;
-        const aqiInfo = getAQIColor(aqi);
+        const val = activePollutant === "aqi" ? aqi : (d?.[activePollutant] ?? 0);
+        const aqiInfo = getAQIColor(activePollutant === "aqi" ? aqi : (val * 2));
 
         layer?.on({
             mouseover: (e) => {
@@ -87,8 +111,8 @@ export default function MaharashtraMap({ selectedDistrict, onDistrictClick, aqiR
                 l?.bindTooltip(
                     `<div style="font-family: IBM Plex Sans, sans-serif; padding: 4px 2px;">
             <strong style="color: #E0E8E0; font-size: 13px;">${name}</strong><br/>
-            <span style="color: ${aqiInfo?.fill}; font-family: JetBrains Mono, monospace; font-size: 12px; font-weight: 700;">AQI: ${aqi}</span>
-            <span style="color: #8FA88F; font-size: 11px; margin-left: 6px;">${aqiInfo?.label}</span>
+            <span style="color: ${aqiInfo?.fill}; font-family: JetBrains Mono, monospace; font-size: 12px; font-weight: 700;">${activePollutant.toUpperCase()}: ${val}</span>
+            <span style="color: #8FA88F; font-size: 11px; margin-left: 6px;">${activePollutant === "aqi" ? aqiInfo?.label : ""}</span>
           </div>`,
                     { permanent: false, sticky: true, className: "aqi-tooltip", direction: "top", offset: [0, -8] }
                 )?.openTooltip();
@@ -129,6 +153,7 @@ export default function MaharashtraMap({ selectedDistrict, onDistrictClick, aqiR
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
                 <MapEffects />
+                <DistrictPanEffect selectedDistrict={selectedDistrict} />
                 <GeoJSON
                     key={`${selectedDistrict}-${aqiRange?.[0]}-${aqiRange?.[1]}`}
                     ref={geoJsonRef}

@@ -100,7 +100,7 @@ const SPECIES_DATA = {
       benefit: "Riverbank Stabilizer",
       co2: "19.2 kg/yr",
       image: "https://img.rocket.new/generatedImages/rocket_gen_img_1e1137fea-1773080878972.png",
-      imageAlt: "Arjun tree with spreading branches and oval leaves growing near riverbank in Maharashtra",
+      imageAlt: "Arjun tree with spreading branches and oval leaves growing near riverbank",
       spacing: "8–10 m",
       maintenance: "Low",
       tag: "Primary",
@@ -128,7 +128,7 @@ const SPECIES_DATA = {
       benefit: "Saline Sandy Soil",
       co2: "20.1 kg/yr",
       image: "https://img.rocket.new/generatedImages/rocket_gen_img_1e3ed5990-1773080881352.png",
-      imageAlt: "Casuarina trees with needle-like foliage growing in coastal sandy soil near Maharashtra shoreline",
+      imageAlt: "Casuarina trees with needle-like foliage growing in coastal sandy soil near shoreline",
       spacing: "3–5 m",
       maintenance: "Very Low",
       tag: "Primary",
@@ -261,7 +261,7 @@ export default function SpeciesRecommendations({ soilType }) {
         
         <Icon name="BookOpen" size={16} color="var(--color-secondary)" className="flex-shrink-0 mt-0.5" />
         <p className="font-caption text-xs" style={{ color: "var(--color-muted-foreground)" }}>
-          Species selection is based on Maharashtra Forest Department guidelines and ICAR soil suitability data. Primary species are recommended for &gt;70% of plantation area; secondary species for remaining 30% to ensure biodiversity.
+          Species selection is based on Environmental Authority guidelines and ICAR soil suitability data. Primary species are recommended for &gt;70% of plantation area; secondary species for remaining 30% to ensure biodiversity.
         </p>
       </div>
     </motion.div>);
