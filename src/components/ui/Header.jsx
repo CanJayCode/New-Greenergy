@@ -29,12 +29,6 @@ const NAV_ITEMS = [
     icon: 'Map',
     description: 'Geographic AQI visualization across Maharashtra districts',
   },
-  {
-    label: 'Districts',
-    path: '/district-database',
-    icon: 'Database',
-    description: 'Maharashtra district reference database',
-  },
 ];
 
 const SUPPORTED_REGIONS = [

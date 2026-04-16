@@ -3,17 +3,43 @@ import React, { useState } from 'react';
 import Icon from 'components/AppIcon';
 import Button from 'components/ui/Button';
 
-export default function ExportPanel() {
+export default function ExportPanel({ data }) {
   const [exporting, setExporting] = useState(null);
   const [done, setDone] = useState(null);
 
-  const handleExport = (type) => {
-    setExporting(type);
+  const handleExportCSV = () => {
+    if (!data || data.length === 0) return;
+    
+    setExporting('csv');
+    
     setTimeout(() => {
-      setExporting(null);
-      setDone(type);
-      setTimeout(() => setDone(null), 2500);
-    }, 1800);
+      try {
+        const headers = Object.keys(data[0]).join(',');
+        const rows = data.map(obj => 
+          Object.values(obj).map(val => 
+            typeof val === 'string' ? `"${val.replace(/"/g, '""')}"` : val
+          ).join(',')
+        );
+        const csvContent = [headers, ...rows].join('\n');
+        
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', `environmental_report_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        setExporting(null);
+        setDone('csv');
+        setTimeout(() => setDone(null), 2500);
+      } catch (error) {
+        console.error('Export failed:', error);
+        setExporting(null);
+      }
+    }, 1000);
   };
 
   return (
@@ -34,19 +60,10 @@ export default function ExportPanel() {
           loading={exporting === 'csv'}
           iconName={done === 'csv' ? 'CheckCircle' : 'FileSpreadsheet'}
           iconPosition="left"
-          onClick={() => handleExport('csv')}
+          onClick={handleExportCSV}
+          disabled={!data || data.length === 0}
         >
           {done === 'csv' ? 'Downloaded!' : 'Export CSV'}
-        </Button>
-        <Button
-          variant="default"
-          size="sm"
-          loading={exporting === 'pdf'}
-          iconName={done === 'pdf' ? 'CheckCircle' : 'FileText'}
-          iconPosition="left"
-          onClick={() => handleExport('pdf')}
-        >
-          {done === 'pdf' ? 'Downloaded!' : 'Export PDF'}
         </Button>
       </div>
     </div>

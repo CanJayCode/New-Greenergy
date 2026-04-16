@@ -106,7 +106,7 @@ export default function AnalyticsDashboard() {
             <FilterPanel
               allDistricts={ALL_DISTRICT_DATA?.map(d => d?.district)}
               selectedDistricts={selectedDistricts}
-              onDistrictToggle={(d) => setSelectedDistricts(prev => prev?.includes(d) ? prev?.filter(x => x !== d) : [...prev, d])}
+              onDistrictChange={setSelectedDistricts}
               activeMetrics={activeMetrics}
               onMetricToggle={handleMetricToggle}
               onReset={handleReset}
